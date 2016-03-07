@@ -1,0 +1,19 @@
+{
+  "name": "yarn.js",
+  "version": "0.0.1",
+  "description": "Yarn parser for Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessicahayley/yarn.js.git"
+  },
+  "author": "Jessica Hayley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jessicahayley/yarn.js/issues"
+  },
+  "homepage": "https://github.com/jessicahayley/yarn.js#readme"
+}
