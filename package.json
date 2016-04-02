@@ -4,7 +4,8 @@
   "description": "Yarn parser for Javascript",
   "main": "src/index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha tests --recursive"
+    "test": "node_modules/mocha/bin/mocha tests --recursive",
+    "lint": "node_modules/jshint/bin/jshint src/*"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/jessicahayley/yarn.js/issues"
   },
-  "homepage": "https://github.com/jessicahayley/yarn.js#readme"
+  "homepage": "https://github.com/jessicahayley/yarn.js#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5"
+  }
 }
