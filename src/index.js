@@ -15,13 +15,13 @@ class CommandResult extends DialogueResult {
 class NodeCompleteResult extends DialogueResult {
 }
 
-class Dialogue {
+class Runner {
     *run() {
         yield null;
     }
 }
 
-class DialogueRunner {
+class Dialogue {
     /**
      * @param {function} lineCallback - Callback function for when a line needs to be displayed
      * @param {function} optionsCallback - Callback function for when a choice must be made
@@ -53,20 +53,20 @@ class DialogueRunner {
         this.finishCallback = finishCallback;
         this.nodeCallback = nodeCallback;
 
-        this.dialogue = new Dialogue();
+        this.runner = new Runner();
     }
 
     /**
      * @param {string} startNode - Name of the node to start the dialogue from
      * @return {Promise} A promise to parse through and run the dialogue
      */
-    run(startNode) {
+    start(startNode) {
         return new Promise((resolve, reject) => {
             if (this.startCallback) {
                 this.startCallback();
             }
 
-            for (let result of this.dialogue.run(startNode)) {
+            for (let result of this.runner.run(startNode)) {
                 if (result instanceof LineResult) {
                     this.lineCallback(result);
                 }
@@ -96,7 +96,7 @@ class DialogueRunner {
 }
 
 module.exports = {
-    DialogueRunner: DialogueRunner,
+    Dialogue: Dialogue,
     LineResult: LineResult,
     OptionsResult: OptionsResult,
     CommandResult: CommandResult

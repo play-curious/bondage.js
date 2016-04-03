@@ -4,20 +4,20 @@ var chai = require('chai'),
 
 const noop = () => {};
 
-describe('DialogueRunner', function() {
+describe('Dialogue', function() {
     it('does let you create an instance with functions', function() {
-        var dialogue = new yarn.DialogueRunner(noop, noop);
+        var dialogue = new yarn.Dialogue(noop, noop);
 
         expect(dialogue.lineCallback).to.be.a('function');
         expect(dialogue.optionsCallback).to.be.a('function');
     });
     it('does not let you create an empty instance of itself', function() {
-        var createDialogue = () => { var dialogue = new yarn.DialogueRunner(); }
+        var createDialogue = () => { var dialogue = new yarn.Dialogue(); }
 
         expect(createDialogue).to.throw(TypeError);
     });
     it('does not let you define non-function callbacks', function() {
-        var createDialogue = () => { var dialogue = new yarn.DialogueRunner(1, "hi"); }
+        var createDialogue = () => { var dialogue = new yarn.Dialogue(1, "hi"); }
 
         expect(createDialogue).to.throw(TypeError);
     });
@@ -25,24 +25,24 @@ describe('DialogueRunner', function() {
     it('calls the line callback function if it gets a line result', function() {
         var lineCallbackCalled = false;
 
-        var dialogue = new yarn.DialogueRunner(() => { lineCallbackCalled = true; },
-                                               noop);
+        var dialogue = new yarn.Dialogue(() => { lineCallbackCalled = true; },
+                                         noop);
 
-        dialogue.dialogue.run = () => [ new yarn.LineResult() ]
+        dialogue.runner.run = () => [ new yarn.LineResult() ]
 
-        return dialogue.run().then(() => {
+        return dialogue.start().then(() => {
             expect(lineCallbackCalled).to.be.true;
         });
     });
     it('calls the options callback function if it gets an options result', function() {
         var optionsCallbackCalled = false;
 
-        var dialogue = new yarn.DialogueRunner(noop,
-                                               () => { optionsCallbackCalled = true; });
+        var dialogue = new yarn.Dialogue(noop,
+                                          () => { optionsCallbackCalled = true; });
 
-        dialogue.dialogue.run = () => [ new yarn.OptionsResult() ]
+        dialogue.runner.run = () => [ new yarn.OptionsResult() ]
 
-        return dialogue.run().then(() => {
+        return dialogue.start().then(() => {
             expect(optionsCallbackCalled).to.be.true;
         });
     });
