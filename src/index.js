@@ -12,6 +12,9 @@ class OptionsResult extends DialogueResult {
 class CommandResult extends DialogueResult {
 }
 
+class NodeCompleteResult extends DialogueResult {
+}
+
 class Dialogue {
     *run() {
         yield null;
@@ -28,19 +31,19 @@ class DialogueRunner {
      */
     constructor(lineCallback, optionsCallback, startCallback, finishCallback, nodeCallback) {
         // Make sure we get functions
-        if(typeof(lineCallback) !== 'function') {
+        if (typeof(lineCallback) !== 'function') {
             throw TypeError('Line callback must be a function!');
         }
-        if(typeof(optionsCallback) !== 'function') {
+        if (typeof(optionsCallback) !== 'function') {
             throw TypeError('Options callback must be a function!');
         }
-        if(startCallback && typeof(startCallback) !== 'function') {
+        if (startCallback && typeof(startCallback) !== 'function') {
             throw TypeError('If you have a start callback it must be a function!');
         }
-        if(finishCallback && typeof(finishCallback) !== 'function') {
+        if (finishCallback && typeof(finishCallback) !== 'function') {
             throw TypeError('If you have a finish callback it must be a function!');
         }
-        if(nodeCallback && typeof(nodeCallback) !== 'function') {
+        if (nodeCallback && typeof(nodeCallback) !== 'function') {
             throw TypeError('If you have a node callback it must be a function!');
         }
 
@@ -59,7 +62,7 @@ class DialogueRunner {
      */
     run(startNode) {
         return new Promise((resolve, reject) => {
-            if(this.startCallback) {
+            if (this.startCallback) {
                 this.startCallback();
             }
 
@@ -73,12 +76,17 @@ class DialogueRunner {
                 else if (result instanceof CommandResult) {
                     // TODO: Command logic
                 }
+                else if (result instanceof NodeCompleteResult) {
+                    if (this.nodeCallback) {
+                        this.nodeCallback();
+                    }
+                }
                 else {
                     reject(new Error('Unrecognized dialogue result: ' + result));
                 }
             }
 
-            if(this.finishCallback) {
+            if (this.finishCallback) {
                 this.finishCallback();
             }
 
