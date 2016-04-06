@@ -1,32 +1,17 @@
-var chai = require('chai'),
-    expect = chai.expect,
-    yarn = require('../src/yarn.js');
-
-const noop = () => {};
+const chai = require('chai'),
+      expect = chai.expect,
+      yarn = require('../src/yarn.js');
 
 describe('Dialogue', function() {
-    it('does let you create an instance with functions', function() {
-        var dialogue = new yarn.Dialogue(noop, noop);
-
-        expect(dialogue.lineCallback).to.be.a('function');
-        expect(dialogue.optionsCallback).to.be.a('function');
-    });
-    it('does not let you create an empty instance of itself', function() {
-        var createDialogue = () => { var dialogue = new yarn.Dialogue(); }
-
-        expect(createDialogue).to.throw(TypeError);
-    });
-    it('does not let you define non-function callbacks', function() {
-        var createDialogue = () => { var dialogue = new yarn.Dialogue(1, "hi"); }
-
-        expect(createDialogue).to.throw(TypeError);
-    });
-
-    it('calls the line callback function if it gets a line result', function() {
+    it('emits a line event if it gets a line result', function() {
         var lineCallbackCalled = false;
 
-        var dialogue = new yarn.Dialogue(() => { lineCallbackCalled = true; },
-                                         noop);
+        var dialogue = new yarn.Dialogue();
+
+        dialogue.on('line', (result) => {
+            lineCallbackCalled = true;
+            expect(result).to.be.an.instanceof(yarn.LineResult);
+        });
 
         dialogue.runner.run = () => [ new yarn.LineResult() ]
 
@@ -34,16 +19,69 @@ describe('Dialogue', function() {
             expect(lineCallbackCalled).to.be.true;
         });
     });
-    it('calls the options callback function if it gets an options result', function() {
+    it('emits an options event if it gets an options result', function() {
         var optionsCallbackCalled = false;
 
-        var dialogue = new yarn.Dialogue(noop,
-                                          () => { optionsCallbackCalled = true; });
+        var dialogue = new yarn.Dialogue();
+
+        dialogue.on('options', (result) => {
+            optionsCallbackCalled = true;
+            expect(result).to.be.an.instanceof(yarn.OptionsResult);
+        });
 
         dialogue.runner.run = () => [ new yarn.OptionsResult() ]
 
         return dialogue.start().then(() => {
             expect(optionsCallbackCalled).to.be.true;
+        });
+    });
+    it('emits a nodecomplete event if it gets an node complete result', function() {
+        var nodecompleteCallbackCalled = false;
+
+        var dialogue = new yarn.Dialogue();
+
+        dialogue.on('nodecomplete', (result) => {
+            nodecompleteCallbackCalled = true;
+            expect(result).to.be.an.instanceof(yarn.NodeCompleteResult);
+        });
+
+        dialogue.runner.run = () => [ new yarn.NodeCompleteResult() ];
+
+        return dialogue.start().then(() => {
+            expect(nodecompleteCallbackCalled).to.be.true;
+        });
+    });
+    it('emits result events in order that they are given', function() {
+        var resultsCalled = [];
+
+        var dialogue = new yarn.Dialogue();
+
+        dialogue.on('line', () => { resultsCalled.push('line'); });
+        dialogue.on('options', () => { resultsCalled.push('options'); });
+        dialogue.on('nodecomplete', () => { resultsCalled.push('nodecomplete'); });
+
+        dialogue.runner.run = () => [ new yarn.OptionsResult(),
+                                      new yarn.NodeCompleteResult(),
+                                      new yarn.LineResult() ]
+
+        return dialogue.start().then(() => {
+            expect(resultsCalled).to.deep.equal(['options', 'nodecomplete', 'line']);
+        });
+    });
+
+    it('emits a start and finish result before/after other results', function() {
+        var resultsCalled = [];
+
+        var dialogue = new yarn.Dialogue();
+
+        dialogue.on('start', () => { resultsCalled.push('start'); });
+        dialogue.on('finish', () => { resultsCalled.push('finish'); });
+        dialogue.on('line', () => { resultsCalled.push('line'); });
+
+        dialogue.runner.run = () => [ new yarn.LineResult() ]
+
+        return dialogue.start().then(() => {
+            expect(resultsCalled).to.deep.equal(['start', 'line', 'finish']);
         });
     });
 });

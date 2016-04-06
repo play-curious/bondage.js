@@ -1,40 +1,12 @@
 'use strict';
 
-var Runner = require('./runner.js').Runner,
-    results = require('./results.js');
+const EventEmitter = require('events'),
+      Runner = require('./runner.js').Runner,
+      results = require('./results.js');
 
-class Dialogue {
-    /**
-     * @param {function} lineCallback - Callback function for when a line needs to be displayed
-     * @param {function} optionsCallback - Callback function for when a choice must be made
-     * @param {function} [startCallback] - Callback function for when dialogue is started
-     * @param {function} [finishCallback] - Callback function for when dialogue is finished
-     * @param {function} [nodeCallback] - Callback function for after a node is finished
-     */
-    constructor(lineCallback, optionsCallback, startCallback, finishCallback, nodeCallback) {
-        // Make sure we get functions
-        if (typeof(lineCallback) !== 'function') {
-            throw TypeError('Line callback must be a function!');
-        }
-        if (typeof(optionsCallback) !== 'function') {
-            throw TypeError('Options callback must be a function!');
-        }
-        if (startCallback && typeof(startCallback) !== 'function') {
-            throw TypeError('If you have a start callback it must be a function!');
-        }
-        if (finishCallback && typeof(finishCallback) !== 'function') {
-            throw TypeError('If you have a finish callback it must be a function!');
-        }
-        if (nodeCallback && typeof(nodeCallback) !== 'function') {
-            throw TypeError('If you have a node callback it must be a function!');
-        }
-
-        this.lineCallback = lineCallback;
-        this.optionsCallback = optionsCallback;
-        this.startCallback = startCallback;
-        this.finishCallback = finishCallback;
-        this.nodeCallback = nodeCallback;
-
+class Dialogue extends EventEmitter {
+    constructor() {
+        super();
         this.runner = new Runner();
     }
 
@@ -44,33 +16,28 @@ class Dialogue {
      */
     start(startNode) {
         return new Promise((resolve, reject) => {
-            if (this.startCallback) {
-                this.startCallback();
-            }
+            this.emit('start');
 
             for (let result of this.runner.run(startNode)) {
                 if (result instanceof results.LineResult) {
-                    this.lineCallback(result);
+                    this.emit('line', result);
                 }
                 else if (result instanceof results.OptionsResult) {
-                    var chosen = this.optionsCallback(result);
+                    this.emit('options', result);
+                    // TODO: Letting them choose options
                 }
                 else if (result instanceof results.CommandResult) {
                     // TODO: Command logic
                 }
                 else if (result instanceof results.NodeCompleteResult) {
-                    if (this.nodeCallback) {
-                        this.nodeCallback();
-                    }
+                    this.emit('nodecomplete', result);
                 }
                 else {
                     throw new Error('Unrecognized dialogue result: ' + result);
                 }
             }
 
-            if (this.finishCallback) {
-                this.finishCallback();
-            }
+            this.emit('finish');
 
             resolve();
         });
@@ -79,4 +46,4 @@ class Dialogue {
 
 module.exports = {
     Dialogue: Dialogue,
-}
+};

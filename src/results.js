@@ -20,4 +20,4 @@ module.exports = {
     OptionsResult: OptionsResult,
     CommandResult: CommandResult,
     NodeCompleteResult: NodeCompleteResult,
-}
+};

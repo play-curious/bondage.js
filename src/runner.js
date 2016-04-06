@@ -12,4 +12,4 @@ class Runner {
 
 module.exports = {
     Runner: Runner,
-}
+};
