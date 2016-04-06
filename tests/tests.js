@@ -1,6 +1,6 @@
 var chai = require('chai'),
     expect = chai.expect,
-    yarn = require('../src/index.js');
+    yarn = require('../src/yarn.js');
 
 const noop = () => {};
 

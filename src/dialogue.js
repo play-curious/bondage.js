@@ -1,25 +1,7 @@
 'use strict';
 
-class DialogueResult {
-}
-
-class LineResult extends DialogueResult {
-}
-
-class OptionsResult extends DialogueResult {
-}
-
-class CommandResult extends DialogueResult {
-}
-
-class NodeCompleteResult extends DialogueResult {
-}
-
-class Runner {
-    *run() {
-        yield null;
-    }
-}
+var Runner = require('./runner.js').Runner,
+    results = require('./results.js');
 
 class Dialogue {
     /**
@@ -67,22 +49,22 @@ class Dialogue {
             }
 
             for (let result of this.runner.run(startNode)) {
-                if (result instanceof LineResult) {
+                if (result instanceof results.LineResult) {
                     this.lineCallback(result);
                 }
-                else if (result instanceof OptionsResult) {
-                    this.optionsCallback(result);
+                else if (result instanceof results.OptionsResult) {
+                    var chosen = this.optionsCallback(result);
                 }
-                else if (result instanceof CommandResult) {
+                else if (result instanceof results.CommandResult) {
                     // TODO: Command logic
                 }
-                else if (result instanceof NodeCompleteResult) {
+                else if (result instanceof results.NodeCompleteResult) {
                     if (this.nodeCallback) {
                         this.nodeCallback();
                     }
                 }
                 else {
-                    reject(new Error('Unrecognized dialogue result: ' + result));
+                    throw new Error('Unrecognized dialogue result: ' + result);
                 }
             }
 
@@ -97,7 +79,4 @@ class Dialogue {
 
 module.exports = {
     Dialogue: Dialogue,
-    LineResult: LineResult,
-    OptionsResult: OptionsResult,
-    CommandResult: CommandResult
-};
+}
