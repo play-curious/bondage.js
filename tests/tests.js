@@ -72,7 +72,7 @@ describe('Dialogue', function() {
 
         dialogue.runner.run = () => [ new yarn.OptionsResult(),
                                       new yarn.NodeCompleteResult(),
-                                      new yarn.LineResult() ]
+                                      new yarn.LineResult() ];
 
         return dialogue.start().then(() => {
             expect(resultsCalled).to.deep.equal(['options', 'nodecomplete', 'line']);
@@ -94,7 +94,7 @@ describe('Dialogue', function() {
             resultsCalled.push('line');
         });
 
-        dialogue.runner.run = () => [ new yarn.LineResult() ]
+        dialogue.runner.run = () => [ new yarn.LineResult() ];
 
         return dialogue.start().then(() => {
             expect(resultsCalled).to.deep.equal(['start', 'line', 'finish']);
