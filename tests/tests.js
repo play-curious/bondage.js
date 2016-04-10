@@ -3,10 +3,14 @@ const chai = require('chai'),
       yarn = require('../src/yarn.js');
 
 describe('Dialogue', function() {
+    var dialogue;
+
+    beforeEach(function() {
+        dialogue = new yarn.Dialogue();
+    });
+
     it('emits a line event if it gets a line result', function() {
         var lineCallbackCalled = false;
-
-        var dialogue = new yarn.Dialogue();
 
         dialogue.on('line', (result) => {
             lineCallbackCalled = true;
@@ -22,8 +26,6 @@ describe('Dialogue', function() {
 
     it('emits an options event if it gets an options result', function() {
         var optionsCallbackCalled = false;
-
-        var dialogue = new yarn.Dialogue();
 
         dialogue.on('options', (result, chooseCallback) => {
             optionsCallbackCalled = true;
@@ -43,8 +45,6 @@ describe('Dialogue', function() {
     it('emits a nodecomplete event if it gets an node complete result', function() {
         var nodecompleteCallbackCalled = false;
 
-        var dialogue = new yarn.Dialogue();
-
         dialogue.on('nodecomplete', (result) => {
             nodecompleteCallbackCalled = true;
             expect(result).to.be.an.instanceof(yarn.NodeCompleteResult);
@@ -59,8 +59,6 @@ describe('Dialogue', function() {
 
     it('emits result events in order that they are given', function() {
         var resultsCalled = [];
-
-        var dialogue = new yarn.Dialogue();
 
         dialogue.on('line', () => {
             resultsCalled.push('line');
@@ -84,8 +82,6 @@ describe('Dialogue', function() {
 
     it('emits a start and finish result before/after other results', function() {
         var resultsCalled = [];
-
-        var dialogue = new yarn.Dialogue();
 
         dialogue.on('start', () => {
             resultsCalled.push('start');
@@ -124,8 +120,6 @@ describe('Dialogue', function() {
                 'body': 'This is a test line',
             }
         }
-
-        var dialogue = new yarn.Dialogue();
 
         expect(dialogue.runner.nodes).to.deep.equal({});
 
