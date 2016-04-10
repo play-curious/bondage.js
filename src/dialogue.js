@@ -22,24 +22,12 @@ class Dialogue extends EventEmitter {
         return new Promise((resolve, reject) => {
             this.emit('start');
 
-            // Set up a callback for them to tell us what option they chose
-            var chosenOption = null;
-            var chooseCallback = (option) => { chosenOption = option; };
-
             for (let result of this.runner.run(startNode)) {
                 if (result instanceof results.LineResult) {
                     this.emit('line', result);
                 }
                 else if (result instanceof results.OptionsResult) {
-                    chosenOption = null; // Make sure it's reset
-
-                    this.emit('options', result, chooseCallback);
-
-                    if (chosenOption === null) {
-                        throw new Error('You must choose an option');
-                    }
-
-                    // TODO: Process chosen option
+                    this.emit('options', result);
                 }
                 else if (result instanceof results.CommandResult) {
                     // TODO: Command logic

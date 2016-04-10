@@ -1,5 +1,7 @@
 'use strict';
 
+const results = require('./results.js');
+
 class Runner {
     constructor() {
         this.nodes = {};
@@ -23,7 +25,39 @@ class Runner {
      * @param {string} [startNode] - The name of the node to begin at
      */
     *run(startNode) {
-        yield null;
+        var curNode = this.nodes[startNode];
+
+        if (curNode === undefined) {
+            throw new Error('Node "' + startNode + '" does not exist');
+        }
+
+        var lines = curNode.body.split('\n');
+
+        var options = [];
+        for (let line of lines) {
+            // TODO: Write a real parser
+            if (line.indexOf('[[') === 0) {
+                // If we find an option at the beginning of the line
+                // Get the node name that is between the '[[' and ']]'
+                var nodeName = line.substring(line.indexOf('[[') + 2, line.indexOf(']]'));
+                options.push(nodeName);
+            }
+            else {
+                yield new results.LineResult(line);
+            }
+        }
+
+        if (options.length > 0) {
+            let result = new results.OptionsResult(options);
+            let choice = null;
+            result.choiceCallback = (option) => {
+                choice = option;
+            }
+
+            yield result;
+
+            yield* this.run(choice);
+        }
     }
 }
 
