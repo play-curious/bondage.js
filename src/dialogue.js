@@ -11,10 +11,14 @@ class Dialogue extends EventEmitter {
     }
 
     /**
-     * @param {string} startNode - Name of the node to start the dialogue from
+     * @param {string} [startNode=Start] - Name of the node to start the dialogue from
      * @return {Promise} A promise to parse through and run the dialogue
      */
     start(startNode) {
+        if (startNode === undefined) {
+            startNode = 'Start';
+        }
+
         return new Promise((resolve, reject) => {
             this.emit('start');
 
