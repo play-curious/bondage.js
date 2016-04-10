@@ -19,6 +19,7 @@ describe('Dialogue', function() {
             expect(lineCallbackCalled).to.be.true;
         });
     });
+
     it('emits an options event if it gets an options result', function() {
         var optionsCallbackCalled = false;
 
@@ -38,6 +39,7 @@ describe('Dialogue', function() {
             expect(optionsCallbackCalled).to.be.true;
         });
     });
+
     it('emits a nodecomplete event if it gets an node complete result', function() {
         var nodecompleteCallbackCalled = false;
 
@@ -54,6 +56,7 @@ describe('Dialogue', function() {
             expect(nodecompleteCallbackCalled).to.be.true;
         });
     });
+
     it('emits result events in order that they are given', function() {
         var resultsCalled = [];
 
@@ -99,5 +102,35 @@ describe('Dialogue', function() {
         return dialogue.start().then(() => {
             expect(resultsCalled).to.deep.equal(['start', 'line', 'finish']);
         });
+    });
+
+    it('is able to load yarn data into the runner', function() {
+        var inputData = [
+            {
+                'title': 'TestNode',
+                'tags': 'tag',
+                'body': 'This is a test line',
+                'position': {
+                    'x': 50,
+                    'y': 50,
+                },
+                'colorID': 0
+            }
+        ]
+
+        var outputData = {
+            'TestNode': {
+                'tags': 'tag',
+                'body': 'This is a test line',
+            }
+        }
+
+        var dialogue = new yarn.Dialogue();
+
+        expect(dialogue.runner.nodes).to.deep.equal({});
+
+        dialogue.load(inputData);
+
+        expect(dialogue.runner.nodes).to.deep.equal(outputData);
     });
 });

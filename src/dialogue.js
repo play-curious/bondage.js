@@ -53,6 +53,15 @@ class Dialogue extends EventEmitter {
             resolve();
         });
     }
+
+    /**
+     * Loads the given yarn data. If data has already been loaded, all new nodes
+     * will be added, while any nodes that already existed will be updated
+     * @param [object] data - Object of exported yarn JSON data
+     */
+    load(data) {
+        this.runner.load(data);
+    }
 }
 
 module.exports = {
