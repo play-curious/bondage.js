@@ -1,9 +1,18 @@
-const chai = require('chai'),
+const fs = require('fs'),
+      chai = require('chai'),
       expect = chai.expect,
       yarn = require('../src/yarn.js');
 
 describe('Dialogue', function() {
     var dialogue;
+
+    var oneNodeYarnData;
+    var threeNodeYarnData;
+
+    before(function() {
+        oneNodeYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/onenode.json'));
+        threeNodeYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/threenodes.json'));
+    });
 
     beforeEach(function() {
         dialogue = new yarn.Dialogue();
@@ -27,12 +36,10 @@ describe('Dialogue', function() {
     it('emits an options event if it gets an options result', function() {
         var optionsCallbackCalled = false;
 
-        dialogue.on('options', (result, chooseCallback) => {
+        dialogue.on('options', (result) => {
             optionsCallbackCalled = true;
-            chooseCallback(true);
 
             expect(result).to.be.an.instanceof(yarn.OptionsResult);
-            expect(chooseCallback).to.be.an.instanceof(Function);
         });
 
         dialogue.runner.run = () => [ new yarn.OptionsResult() ];
@@ -63,8 +70,7 @@ describe('Dialogue', function() {
         dialogue.on('line', () => {
             resultsCalled.push('line');
         });
-        dialogue.on('options', (results, chooseCallback) => {
-            chooseCallback(true);
+        dialogue.on('options', (results) => {
             resultsCalled.push('options');
         });
         dialogue.on('nodecomplete', () => {
@@ -101,30 +107,85 @@ describe('Dialogue', function() {
     });
 
     it('is able to load yarn data into the runner', function() {
-        var inputData = [
-            {
-                'title': 'TestNode',
-                'tags': 'tag',
-                'body': 'This is a test line',
-                'position': {
-                    'x': 50,
-                    'y': 50,
-                },
-                'colorID': 0
-            }
-        ]
-
         var outputData = {
-            'TestNode': {
-                'tags': 'tag',
+            'Start': {
+                'tags': 'Tag',
                 'body': 'This is a test line',
             }
         }
 
         expect(dialogue.runner.nodes).to.deep.equal({});
 
-        dialogue.load(inputData);
+        dialogue.load(oneNodeYarnData);
 
         expect(dialogue.runner.nodes).to.deep.equal(outputData);
+    });
+
+    it('is able to run through some given yarn data that contains options, when choosing the first option', function() {
+        // We'll keep track of all lines to make sure they were given in order
+        // Whenever options appear, we'll just say [[OPTIONS]] so we know they were displayed
+        var lines = [];
+
+        var expectedLines = [
+            'This is a test line',
+            'This is another test line',
+            '[[OPTIONS]]',
+            'This is Option1\'s test line'
+        ]
+
+        var expectedOptions = [
+            'Option1',
+            'Option2',
+        ]
+
+        dialogue.load(threeNodeYarnData);
+
+        dialogue.on('line', (result) => {
+            lines.push(result.text);
+        });
+        dialogue.on('options', (result) => {
+            lines.push('[[OPTIONS]]'); // Just to make sure they were displayed in the correct place
+            expect(result.options).to.deep.equal(expectedOptions);
+
+            result.choose(result.options[0]);
+        });
+
+        dialogue.start();
+
+        expect(lines).to.deep.equal(expectedLines);
+    });
+
+    it('is able to run through some given yarn data that contains an option, when choosing the second option', function() {
+        // We'll keep track of all lines to make sure they were given in order
+        // Whenever options appear, we'll just say [[OPTIONS]] so we know they were displayed
+        var lines = [];
+
+        var expectedLines = [
+            'This is a test line',
+            'This is another test line',
+            '[[OPTIONS]]',
+            'This is Option2\'s test line'
+        ]
+
+        var expectedOptions = [
+            'Option1',
+            'Option2',
+        ]
+
+        dialogue.load(threeNodeYarnData);
+
+        dialogue.on('line', (result) => {
+            lines.push(result.text);
+        });
+        dialogue.on('options', (result) => {
+            lines.push('[[OPTIONS]]'); // Just to make sure they were displayed in the correct place
+            expect(result.options).to.deep.equal(expectedOptions);
+
+            result.choose(result.options[1]);
+        });
+
+        dialogue.start();
+
+        expect(lines).to.deep.equal(expectedLines);
     });
 });
