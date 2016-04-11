@@ -3,7 +3,8 @@
 
 # Work in Progress
 
-Some of the base text/option functionality is there but it is not nearly fully feature. See the [Milestones](https://github.com/jessicahayley/bondage.js/milestones) for what's currently needs to be worked on.
+Some of the base text/option functionality is there but it is not nearly fully feature complete. See the [Milestones](https://github.com/jessicahayley/bondage.js/milestones) for what's currently needs to be worked on.
+Use at your own risk!
 
 # Usage
 
