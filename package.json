@@ -1,5 +1,5 @@
 {
-  "name": "yarn.js",
+  "name": "bondage.js",
   "version": "0.0.1",
   "description": "Yarn parser for Javascript",
   "main": "src/yarn.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jessicahayley/yarn.js.git"
+    "url": "git+https://github.com/jessicahayley/bondage.js.git"
   },
   "author": "Jessica Hayley",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jessicahayley/yarn.js/issues"
+    "url": "https://github.com/jessicahayley/bondage.js/issues"
   },
-  "homepage": "https://github.com/jessicahayley/yarn.js#readme",
+  "homepage": "https://github.com/jessicahayley/bondage.js#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "jshint": "^2.9.1",
