@@ -6,6 +6,14 @@
 Some of the base text/option functionality is there but it is not nearly fully feature complete. See the [Milestones](https://github.com/jessicahayley/bondage.js/milestones) for what's currently needs to be worked on.
 Use at your own risk!
 
+### Things that don't currently work:
+* Named links
+* Variables
+* If statements
+* Shortcut Options
+* Commands
+* Functions
+
 # Usage
 
 Installation: `npm install bondage`
