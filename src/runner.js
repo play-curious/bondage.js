@@ -47,6 +47,8 @@ class Runner {
             }
         }
 
+        let nextNode = null;
+
         if (options.length > 0) {
             let result = new results.OptionsResult(options);
             let choice = null;
@@ -56,7 +58,14 @@ class Runner {
 
             yield result;
 
-            yield* this.run(choice);
+            nextNode = choice;
+
+        }
+
+        yield new results.NodeCompleteResult();
+
+        if (nextNode !== null) {
+            yield* this.run(nextNode);
         }
     }
 }

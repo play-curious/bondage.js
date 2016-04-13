@@ -188,4 +188,33 @@ describe('Dialogue', function() {
 
         expect(lines).to.deep.equal(expectedLines);
     });
+
+    it('emits a nodecomplete event when it finishes parsing a node', function() {
+        // We'll keep track of all lines to make sure they were given in order
+        var lines = [];
+
+        var expectedLines = [
+            'This is a test line',
+            'This is another test line',
+            '[[NODECOMPLETE]]',
+            'This is Option1\'s test line',
+            '[[NODECOMPLETE]]',
+        ]
+
+        dialogue.load(threeNodeYarnData);
+
+        dialogue.on('line', (result) => {
+            lines.push(result.text);
+        });
+        dialogue.on('options', (result) => {
+            result.choose(result.options[0]);
+        });
+        dialogue.on('nodecomplete', (result) => {
+            lines.push('[[NODECOMPLETE]]');
+        });
+
+        dialogue.start();
+
+        expect(lines).to.deep.equal(expectedLines);
+    });
 });
