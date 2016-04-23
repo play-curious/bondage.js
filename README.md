@@ -44,7 +44,7 @@ dialogue.on('options', function(result) {
         console.log(option.text);
     }
 
-    // Specify which option is chosen
+    // Specify which option is chosen (must be called before the function exits)
     result.choose(result.options[0]);
 });
 dialogue.on('nodecomplete', function(result) {
