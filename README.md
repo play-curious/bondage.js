@@ -40,7 +40,9 @@ dialogue.on('line', function(result) {
 dialogue.on('options', function(result) {
     // Called when there is a choice to be made
     // result.options is a list of options
-    console.log(result.options);
+    for (let option of result.options) {
+        console.log(option.text);
+    }
 
     // Specify which option is chosen
     result.choose(result.options[0]);
