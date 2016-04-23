@@ -8,10 +8,12 @@ describe('Dialogue', function() {
 
     var oneNodeYarnData;
     var threeNodeYarnData;
+    var namedLinkYarnData;
 
     before(function() {
         oneNodeYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/onenode.json'));
         threeNodeYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/threenodes.json'));
+        namedLinkYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/namedlink.json'));
     });
 
     beforeEach(function() {
@@ -121,6 +123,40 @@ describe('Dialogue', function() {
         expect(dialogue.runner.nodes).to.deep.equal(outputData);
     });
 
+    it('is able to run through some given yarn data that contains named options, when choosing the first option', function() {
+        // We'll keep track of all lines to make sure they were given in order
+        // Whenever options appear, we'll just say [[OPTIONS]] so we know they were displayed
+        var lines = [];
+
+        var expectedLines = [
+            'This is a test line',
+            'This is another test line',
+            '[[OPTIONS]]',
+            'This is Dest1\'s test line'
+        ]
+
+        var expectedOptions = [
+            { text: 'Option1', target: 'Dest1' },
+            { text: 'Option2', target: 'Dest2' },
+        ]
+
+        dialogue.load(namedLinkYarnData);
+
+        dialogue.on('line', (result) => {
+            lines.push(result.text);
+        });
+        dialogue.on('options', (result) => {
+            lines.push('[[OPTIONS]]'); // Just to make sure they were displayed in the correct place
+            expect(result.options).to.deep.equal(expectedOptions);
+
+            result.choose(result.options[0]);
+        });
+
+        dialogue.start();
+
+        expect(lines).to.deep.equal(expectedLines);
+    });
+
     it('is able to run through some given yarn data that contains options, when choosing the first option', function() {
         // We'll keep track of all lines to make sure they were given in order
         // Whenever options appear, we'll just say [[OPTIONS]] so we know they were displayed
@@ -134,8 +170,8 @@ describe('Dialogue', function() {
         ]
 
         var expectedOptions = [
-            'Option1',
-            'Option2',
+            { text: 'Option1', target: 'Option1' },
+            { text: 'Option2', target: 'Option2' },
         ]
 
         dialogue.load(threeNodeYarnData);
@@ -168,8 +204,8 @@ describe('Dialogue', function() {
         ]
 
         var expectedOptions = [
-            'Option1',
-            'Option2',
+            { text: 'Option1', target: 'Option1' },
+            { text: 'Option2', target: 'Option2' },
         ]
 
         dialogue.load(threeNodeYarnData);

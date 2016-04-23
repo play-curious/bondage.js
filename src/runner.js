@@ -39,8 +39,17 @@ class Runner {
             if (line.indexOf('[[') === 0) {
                 // If we find an option at the beginning of the line
                 // Get the node name that is between the '[[' and ']]'
-                var nodeName = line.substring(line.indexOf('[[') + 2, line.indexOf(']]'));
-                options.push(nodeName);
+                let nodeText = line.substring(line.indexOf('[[') + 2, line.indexOf(']]'));
+
+                // Split on the | for named links
+                nodeText = nodeText.split('|');
+
+                let option = {
+                    text: nodeText[0],
+                    target: nodeText[1] || nodeText[0], // If there's no target, just use the text
+                }
+
+                options.push(option);
             }
             else {
                 yield new results.LineResult(line);
@@ -58,7 +67,7 @@ class Runner {
 
             yield result;
 
-            nextNode = choice;
+            nextNode = choice.target;
 
         }
 
