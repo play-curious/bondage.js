@@ -7,7 +7,6 @@ Some of the base text/option functionality is there but it is not nearly fully f
 Use at your own risk!
 
 ### Things that don't currently work:
-* Named links
 * Variables
 * If statements
 * Shortcut Options
