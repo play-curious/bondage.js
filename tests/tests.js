@@ -14,6 +14,7 @@ describe('Dialogue', function() {
         oneNodeYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/onenode.json'));
         threeNodeYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/threenodes.json'));
         namedLinkYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/namedlink.json'));
+        commandsYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/commands.json'));
     });
 
     beforeEach(function() {
@@ -152,9 +153,9 @@ describe('Dialogue', function() {
             result.choose(result.options[0]);
         });
 
-        dialogue.start();
-
-        expect(lines).to.deep.equal(expectedLines);
+        return dialogue.start().then(() => {
+            expect(lines).to.deep.equal(expectedLines);
+        });
     });
 
     it('is able to run through some given yarn data that contains options, when choosing the first option', function() {
@@ -186,9 +187,9 @@ describe('Dialogue', function() {
             result.choose(result.options[0]);
         });
 
-        dialogue.start();
-
-        expect(lines).to.deep.equal(expectedLines);
+        return dialogue.start().then(() => {
+            expect(lines).to.deep.equal(expectedLines);
+        });
     });
 
     it('is able to run through some given yarn data that contains an option, when choosing the second option', function() {
@@ -220,9 +221,9 @@ describe('Dialogue', function() {
             result.choose(result.options[1]);
         });
 
-        dialogue.start();
-
-        expect(lines).to.deep.equal(expectedLines);
+        return dialogue.start().then(() => {
+            expect(lines).to.deep.equal(expectedLines);
+        });
     });
 
     it('emits a nodecomplete event when it finishes parsing a node', function() {
@@ -249,8 +250,33 @@ describe('Dialogue', function() {
             lines.push('[[NODECOMPLETE]]');
         });
 
-        dialogue.start();
+        return dialogue.start().then(() => {
+            expect(lines).to.deep.equal(expectedLines);
+        });
+    });
 
-        expect(lines).to.deep.equal(expectedLines);
+    it('handles commands when they are inline or on their own line', function() {
+        // We'll keep track of all lines to make sure they were given in order
+        var lines = [];
+
+        var expectedLines = [
+            'COMMAND: command1',
+            'COMMAND: command2',
+            'text in between commands',
+            'COMMAND: command3',
+        ]
+
+        dialogue.load(commandsYarnData);
+
+        dialogue.on('line', (result) => {
+            lines.push(result.text);
+        });
+        dialogue.on('command', (result) => {
+            lines.push('COMMAND: ' + result.command);
+        });
+
+        return dialogue.start().then(() => {
+            expect(lines).to.deep.equal(expectedLines);
+        });
     });
 });

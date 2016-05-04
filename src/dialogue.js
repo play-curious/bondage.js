@@ -30,7 +30,7 @@ class Dialogue extends EventEmitter {
                     this.emit('options', result);
                 }
                 else if (result instanceof results.CommandResult) {
-                    // TODO: Command logic
+                    this.emit('command', result);
                 }
                 else if (result instanceof results.NodeCompleteResult) {
                     this.emit('nodecomplete', result);

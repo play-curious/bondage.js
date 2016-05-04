@@ -25,33 +25,53 @@ class Runner {
      * @param {string} [startNode] - The name of the node to begin at
      */
     *run(startNode) {
-        var curNode = this.nodes[startNode];
+        let curNode = this.nodes[startNode];
 
         if (curNode === undefined) {
             throw new Error('Node "' + startNode + '" does not exist');
         }
 
-        var lines = curNode.body.split('\n');
+        let lines = curNode.body.split('\n');
 
-        var options = [];
+        // TODO: Write a real parser
+        let options = [];
         for (let line of lines) {
-            // TODO: Write a real parser
-            if (line.indexOf('[[') === 0) {
-                // If we find an option at the beginning of the line
-                // Get the node name that is between the '[[' and ']]'
-                let nodeText = line.substring(line.indexOf('[[') + 2, line.indexOf(']]'));
+            let optionStartPos = line.indexOf('[[');
+            let commandStartPos = line.indexOf('<<');
 
-                // Split on the | for named links
-                nodeText = nodeText.split('|');
+            // While there are still options or commands in this line
+            while (optionStartPos !== -1 || commandStartPos !== -1) {
+                if (optionStartPos !== -1) {
+                    // If we find an option get the text that is between the '[[' and ']]'
+                    let fullOptionText = line.substring(line.indexOf('[[') + 2, line.indexOf(']]'));
 
-                let option = {
-                    text: nodeText[0],
-                    target: nodeText[1] || nodeText[0], // If there's no target, just use the text
+                    // Split on the | for named links
+                    let optionText = fullOptionText.split('|');
+
+                    let option = {
+                        text: optionText[0],
+                        target: optionText[1] || optionText[0], // If there's no target, just use the text
+                    }
+
+                    options.push(option);
+
+                    // Remove the option text from the line
+                    line = line.replace('[[' + fullOptionText + ']]', '');
+                }
+                if (commandStartPos !== -1) {
+                    // If we find a command get the text that is between the '<<' and '>>'
+                    let commandText = line.substring(line.indexOf('<<') + 2, line.indexOf('>>'));
+
+                    yield new results.CommandResult(commandText);
+
+                    // Remove the option text from the line
+                    line = line.replace('<<' + commandText + '>>', '');
                 }
 
-                options.push(option);
+                optionStartPos = line.indexOf('[[');
+                commandStartPos = line.indexOf('<<');
             }
-            else {
+            if (line !== '') {
                 yield new results.LineResult(line);
             }
         }

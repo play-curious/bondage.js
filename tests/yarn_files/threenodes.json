@@ -2,7 +2,7 @@
 	{
 		"title": "Start",
 		"tags": "",
-		"body": "This is a test line\nThis is another test line\n[[Option1]]\n[[Option2]]",
+		"body": "This is a test line\nThis is another test line[[Option1]]\n[[Option2]]",
 		"position": {
 			"x": 449,
 			"y": 252

@@ -36,6 +36,10 @@ class OptionsResult extends DialogueResult {
 }
 
 class CommandResult extends DialogueResult {
+    constructor(command) {
+        super();
+        this.command = command;
+    }
 }
 
 class NodeCompleteResult extends DialogueResult {
