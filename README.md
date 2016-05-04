@@ -11,7 +11,6 @@ Use at your own risk!
 * Variables
 * If statements
 * Shortcut Options
-* Commands
 * Functions
 
 # Usage
@@ -46,6 +45,10 @@ dialogue.on('options', function(result) {
 
     // Specify which option is chosen (must be called before the function exits)
     result.choose(result.options[0]);
+});
+dialogue.on('command', function(result) {
+    // Called when a command like <<command text>> is encountered
+    console.log(result.command);
 });
 dialogue.on('nodecomplete', function(result) {
     // Called when we finish a node
