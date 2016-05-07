@@ -1,7 +1,7 @@
 const fs = require('fs'),
       chai = require('chai'),
       expect = chai.expect,
-      yarn = require('../src/yarn.js');
+      yarn = require('../src/bondage.js');
 
 describe('Dialogue', function() {
     var dialogue;
