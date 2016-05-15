@@ -1,0 +1,10 @@
+{
+    "extends": "airbnb",
+    "env": {
+        "es6": true
+    },
+    "rules": {
+        "object-shorthand": "off",
+        "strict": "off"
+    }
+}
