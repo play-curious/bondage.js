@@ -1,5 +1,8 @@
 /* eslint no-unused-expressions: "off" */
 /* eslint-env mocha */
+
+'use strict';
+
 const fs = require('fs');
 const chai = require('chai');
 const expect = chai.expect;
