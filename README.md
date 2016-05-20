@@ -20,39 +20,51 @@ Installation: `npm install bondage`
 const fs = require('fs');
 const bondage = require('bondage');
 
-var dialogue = new bondage.Dialogue();
-var yarnData = JSON.parse(fs.readFileSync('yarnFile.json'));
+const dialogue = new bondage.Dialogue();
+const yarnData = JSON.parse(fs.readFileSync('yarnFile.json'));
+
 dialogue.load(yarnData);
 
-dialogue.on('start', function() {
-    // Called before dialogue is ran
+dialogue.on('start', () => {
+  // Called before dialogue is ran
 });
-dialogue.on('finish', function() {
-    // Called after dialogue has finished
-});
-
-dialogue.on('line', function(result) {
-    // Called when a line of text should be displayed
-    console.log(result.text);
-});
-dialogue.on('options', function(result) {
-    // Called when there is a choice to be made
-    // result.options is a list of options
-    for (let option of result.options) {
-        console.log(option.text);
-    }
-
-    // Specify which option is chosen (must be called before the function exits)
-    result.choose(result.options[0]);
-});
-dialogue.on('command', function(result) {
-    // Called when a command like <<command text>> is encountered
-    console.log(result.command);
-});
-dialogue.on('nodecomplete', function(result) {
-    // Called when we finish a node
+dialogue.on('finish', () => {
+  // Called after dialogue has finished
 });
 
-// Start the dialogue from the node titled 'NodeName'
-dialogue.start('NodeName');
+dialogue.on('line', (result) => {
+  // Called when a line of text should be displayed
+  console.log(result.text);
+});
+dialogue.on('options', (result) => {
+  // Called when there is a choice to be made
+  // result.options is a list of options
+  for (const option of result.options) {
+    console.log(option.text);
+  }
+
+  // Specify which option is chosen (must be called before the next iteration of the loop)
+  result.choose(result.options[0]);
+});
+dialogue.on('command', (result) => {
+  // Called when a command like <<command text>> is encountered
+  console.log(result.command);
+});
+dialogue.on('nodecomplete', (result) => {
+  // Called when we finish a node
+  console.log(result.nodeName);
+});
+
+// Loop over the dialogue from the node titled 'Start'
+// The result returned to this loop is the same as the ones passed to the listeners above, but
+// the attached event listeners get called before the result is returned to this loop
+for (const result of dialogue.run('Start')) {
+  // Do something else with the result
+}
+
+// Advance the dialogue manually from the node titled 'Start'
+const d = dialogue.run('Start')
+let result = d.next().value;
+let nextResult = d.next().value;
+// And so on
 ```
