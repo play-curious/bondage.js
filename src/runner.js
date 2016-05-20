@@ -96,7 +96,7 @@ class Runner {
       nextNode = choice.target;
     }
 
-    yield new results.NodeCompleteResult();
+    yield new results.NodeCompleteResult(startNode);
 
     if (nextNode !== null) {
       yield* this.run(nextNode);

@@ -42,6 +42,10 @@ class CommandResult extends DialogueResult {
 }
 
 class NodeCompleteResult extends DialogueResult {
+  constructor(nodeName) {
+    super();
+    this.nodeName = nodeName;
+  }
 }
 
 module.exports = {
