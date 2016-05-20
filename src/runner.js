@@ -87,6 +87,12 @@ class Runner {
 
       yield result;
 
+      if (choice === null) {
+        // Can I make this so if they call next() again after choosing an option it'll still work?
+        // Instead of just completely bailing on an error
+        throw new Error('No option was selected');
+      }
+
       nextNode = choice.target;
     }
 

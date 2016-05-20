@@ -16,6 +16,13 @@ describe('Dialogue', () => {
   let namedLinkYarnData;
   let commandsYarnData;
 
+  const loopToFinish = it => {
+    // Loop over the given iterator until it finishes
+
+    // eslint-disable-next-line no-unused-vars, no-empty
+    for (const _ of it) { }
+  };
+
   before(() => {
     oneNodeYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/onenode.json'));
     threeNodeYarnData = JSON.parse(fs.readFileSync('./tests/yarn_files/threenodes.json'));
@@ -37,9 +44,9 @@ describe('Dialogue', () => {
 
     dialogue.runner.run = () => [new yarn.LineResult()];
 
-    return dialogue.start().then(() => {
-      expect(lineCallbackCalled).to.be.true;
-    });
+    dialogue.run().next();
+
+    expect(lineCallbackCalled).to.be.true;
   });
 
   it('emits an options event if it gets an options result', () => {
@@ -53,9 +60,25 @@ describe('Dialogue', () => {
 
     dialogue.runner.run = () => [new yarn.OptionsResult()];
 
-    return dialogue.start().then(() => {
-      expect(optionsCallbackCalled).to.be.true;
+    loopToFinish(dialogue.run());
+
+    expect(optionsCallbackCalled).to.be.true;
+  });
+
+  it('emits an command event if it gets an command result', () => {
+    let commandCallbackCalled = false;
+
+    dialogue.on('command', (result) => {
+      commandCallbackCalled = true;
+
+      expect(result).to.be.an.instanceof(yarn.CommandResult);
     });
+
+    dialogue.runner.run = () => [new yarn.CommandResult()];
+
+    loopToFinish(dialogue.run());
+
+    expect(commandCallbackCalled).to.be.true;
   });
 
   it('emits a nodecomplete event if it gets an node complete result', () => {
@@ -68,9 +91,9 @@ describe('Dialogue', () => {
 
     dialogue.runner.run = () => [new yarn.NodeCompleteResult()];
 
-    return dialogue.start().then(() => {
-      expect(nodecompleteCallbackCalled).to.be.true;
-    });
+    loopToFinish(dialogue.run());
+
+    expect(nodecompleteCallbackCalled).to.be.true;
   });
 
   it('emits result events in order that they are given', () => {
@@ -92,9 +115,9 @@ describe('Dialogue', () => {
       new yarn.LineResult(),
     ];
 
-    return dialogue.start().then(() => {
-      expect(resultsCalled).to.deep.equal(['options', 'nodecomplete', 'line']);
-    });
+    loopToFinish(dialogue.run());
+
+    expect(resultsCalled).to.deep.equal(['options', 'nodecomplete', 'line']);
   });
 
   it('emits a start and finish result before/after other results', () => {
@@ -112,9 +135,9 @@ describe('Dialogue', () => {
 
     dialogue.runner.run = () => [new yarn.LineResult()];
 
-    return dialogue.start().then(() => {
-      expect(resultsCalled).to.deep.equal(['start', 'line', 'finish']);
-    });
+    loopToFinish(dialogue.run());
+
+    expect(resultsCalled).to.deep.equal(['start', 'line', 'finish']);
   });
 
   it('is able to load yarn data into the runner', () => {
@@ -161,9 +184,9 @@ describe('Dialogue', () => {
       result.choose(result.options[0]);
     });
 
-    return dialogue.start().then(() => {
-      expect(lines).to.deep.equal(expectedLines);
-    });
+    loopToFinish(dialogue.run());
+
+    expect(lines).to.deep.equal(expectedLines);
   });
 
   it('is able to run through yarn data with options, when choosing the first option', () => {
@@ -195,9 +218,9 @@ describe('Dialogue', () => {
       result.choose(result.options[0]);
     });
 
-    return dialogue.start().then(() => {
-      expect(lines).to.deep.equal(expectedLines);
-    });
+    loopToFinish(dialogue.run());
+
+    expect(lines).to.deep.equal(expectedLines);
   });
 
   it('is able to run through yarn data with an option, when choosing the second option', () => {
@@ -229,9 +252,9 @@ describe('Dialogue', () => {
       result.choose(result.options[1]);
     });
 
-    return dialogue.start().then(() => {
-      expect(lines).to.deep.equal(expectedLines);
-    });
+    loopToFinish(dialogue.run());
+
+    expect(lines).to.deep.equal(expectedLines);
   });
 
   it('emits a nodecomplete event when it finishes parsing a node', () => {
@@ -258,9 +281,9 @@ describe('Dialogue', () => {
       lines.push('[[NODECOMPLETE]]');
     });
 
-    return dialogue.start().then(() => {
-      expect(lines).to.deep.equal(expectedLines);
-    });
+    loopToFinish(dialogue.run());
+
+    expect(lines).to.deep.equal(expectedLines);
   });
 
   it('handles commands when they are inline or on their own line', () => {
@@ -283,8 +306,8 @@ describe('Dialogue', () => {
       lines.push(`COMMAND: ${result.command}`);
     });
 
-    return dialogue.start().then(() => {
-      expect(lines).to.deep.equal(expectedLines);
-    });
+    loopToFinish(dialogue.run());
+
+    expect(lines).to.deep.equal(expectedLines);
   });
 });

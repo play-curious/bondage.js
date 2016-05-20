@@ -11,36 +11,36 @@ class Dialogue extends EventEmitter {
   }
 
   /**
+  * Return an iterator over the dialogue results. Each dialogue result is yielded after the event
+  * is emitted
   * @param {string} [startNode=Start] - Name of the node to start the dialogue from
-  * @return {Promise} A promise to parse through and run the dialogue
+  * @return {*DialogueResult} An iterator that returns the next DialogueResult in sequence
   */
-  start(startNode) {
+  *run(startNode) {
     let node = startNode;
     if (node === undefined) {
       node = 'Start';
     }
 
-    return new Promise((resolve) => {
-      this.emit('start');
+    this.emit('start');
 
-      for (const result of this.runner.run(node)) {
-        if (result instanceof results.LineResult) {
-          this.emit('line', result);
-        } else if (result instanceof results.OptionsResult) {
-          this.emit('options', result);
-        } else if (result instanceof results.CommandResult) {
-          this.emit('command', result);
-        } else if (result instanceof results.NodeCompleteResult) {
-          this.emit('nodecomplete', result);
-        } else {
-          throw new Error(`Unrecognized dialogue result: ${result}`);
-        }
+    for (const result of this.runner.run(node)) {
+      if (result instanceof results.LineResult) {
+        this.emit('line', result);
+      } else if (result instanceof results.OptionsResult) {
+        this.emit('options', result);
+      } else if (result instanceof results.CommandResult) {
+        this.emit('command', result);
+      } else if (result instanceof results.NodeCompleteResult) {
+        this.emit('nodecomplete', result);
+      } else {
+        throw new Error(`Unrecognized dialogue result: ${result}`);
       }
 
-      this.emit('finish');
+      yield result;
+    }
 
-      resolve();
-    });
+    this.emit('finish');
   }
 
   /**
