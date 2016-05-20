@@ -264,9 +264,9 @@ describe('Dialogue', () => {
     const expectedLines = [
       'This is a test line',
       'This is another test line',
-      '[[NODECOMPLETE]]',
+      'NODECOMPLETE: Start',
       'This is Option1\'s test line',
-      '[[NODECOMPLETE]]',
+      'NODECOMPLETE: Option1',
     ];
 
     dialogue.load(threeNodeYarnData);
@@ -277,8 +277,8 @@ describe('Dialogue', () => {
     dialogue.on('options', (result) => {
       result.choose(result.options[0]);
     });
-    dialogue.on('nodecomplete', () => {
-      lines.push('[[NODECOMPLETE]]');
+    dialogue.on('nodecomplete', (result) => {
+      lines.push(`NODECOMPLETE: ${result.nodeName}`);
     });
 
     loopToFinish(dialogue.run());
