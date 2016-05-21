@@ -7,6 +7,9 @@
     "test": "node_modules/mocha/bin/mocha tests --recursive || exit 0",
     "lint": "node_modules/.bin/eslint . || exit 0"
   },
+  "bin": {
+    "bondage": "bin/bondage_runner.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jessicahayley/bondage.js.git"
@@ -25,5 +28,9 @@
     "eslint-plugin-jsx-a11y": "^1.2.0",
     "eslint-plugin-react": "^5.1.1",
     "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "inquirer": "^1.0.2"
   }
 }
