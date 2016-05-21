@@ -12,7 +12,7 @@ const WEBPACK_CONFIG = {
   ],
   output: {
     path: './dist',
-    filename: '[name].bundle.js',
+    filename: '[name].min.js',
     libraryTarget: 'var',
     library: 'bondage',
   },
