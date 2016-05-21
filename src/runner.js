@@ -34,7 +34,9 @@ class Runner {
     const lines = curNode.body.split('\n');
 
     // TODO: Write a real parser
-    const options = [];
+
+    // Dictionary of option text -> name of destination node
+    const options = {};
     for (let line of lines) {
       let optionStartPos = line.indexOf('[[');
       let commandStartPos = line.indexOf('<<');
@@ -48,12 +50,9 @@ class Runner {
           // Split on the | for named links
           const optionText = fullOptionText.split('|');
 
-          const option = {
-            text: optionText[0],
-            target: optionText[1] || optionText[0], // If there's no target, just use the text
-          };
-
-          options.push(option);
+          // Put the option into the options dictionary
+          // If there's no target node specified, just use the text
+          options[optionText[0]] = optionText[1] || optionText[0];
 
           // Remove the option text from the line
           line = line.replace(`[[${fullOptionText}]]`, '');
@@ -78,22 +77,27 @@ class Runner {
 
     let nextNode = null;
 
-    if (options.length > 0) {
-      const result = new results.OptionsResult(options);
+    if (Object.keys(options).length > 0) {
+      const result = new results.OptionsResult(Object.keys(options));
       let choice = null;
       result.choiceCallback = (option) => {
+        // We should be given the text for the option
         choice = option;
       };
 
       yield result;
 
       if (choice === null) {
-        // Can I make this so if they call next() again after choosing an option it'll still work?
-        // Instead of just completely bailing on an error
+        // TODO: Can I make this so if they call next() again after choosing an option it'll still
+        // work? Instead of just completely bailing on an error
         throw new Error('No option was selected');
       }
 
-      nextNode = choice.target;
+      nextNode = options[choice];
+
+      if (nextNode === undefined) {
+        throw new Error(`Invalid option selected, valid options are: ${Object.keys(options)}`);
+      }
     }
 
     yield new results.NodeCompleteResult(startNode);

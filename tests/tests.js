@@ -168,8 +168,8 @@ describe('Dialogue', () => {
     ];
 
     const expectedOptions = [
-      { text: 'Option1', target: 'Dest1' },
-      { text: 'Option2', target: 'Dest2' },
+      'Option1',
+      'Option2',
     ];
 
     dialogue.load(namedLinkYarnData);
@@ -202,8 +202,8 @@ describe('Dialogue', () => {
     ];
 
     const expectedOptions = [
-      { text: 'Option1', target: 'Option1' },
-      { text: 'Option2', target: 'Option2' },
+      'Option1',
+      'Option2',
     ];
 
     dialogue.load(threeNodeYarnData);
@@ -236,8 +236,8 @@ describe('Dialogue', () => {
     ];
 
     const expectedOptions = [
-      { text: 'Option1', target: 'Option1' },
-      { text: 'Option2', target: 'Option2' },
+      'Option1',
+      'Option2',
     ];
 
     dialogue.load(threeNodeYarnData);

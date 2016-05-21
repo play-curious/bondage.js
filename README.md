@@ -40,7 +40,7 @@ dialogue.on('options', (result) => {
   // Called when there is a choice to be made
   // result.options is a list of options
   for (const option of result.options) {
-    console.log(option.text);
+    console.log(option);
   }
 
   // Specify which option is chosen (must be called before the next iteration of the loop)
