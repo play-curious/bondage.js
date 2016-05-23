@@ -26,6 +26,13 @@ Now you can use the `bondage` command to run through Yarn files from the command
 * Running multiple files from the specified node name: `bondage -s StartNode yarnfile1.json yarnfile2.json ...`
 
 #### As a Library
+
+**Web**
+
+Include [dist/bondage.min.js](https://github.com/jessicahayley/bondage.js/blob/master/dist/bondage.min.js) somewhere in your html, and the `bondage` variable will be added to the global scope. You can then access everything in the example below (such as `bondage.Dialogue`) through that variable. 
+
+**Node**
+
 Installation: `npm install bondage`
 
 ```javascript
