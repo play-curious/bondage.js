@@ -14,6 +14,10 @@ Use at your own risk!
 
 # Usage
 
+#### As a Web Tool
+
+To run through your yarn files in your browser, go to http://jayhay.me/bondage.js, paste your yarn data in the field, then hit "compile".
+
 #### As a Command Line Tool
 Installation: `npm install -g bondage`
 
