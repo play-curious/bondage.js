@@ -51,10 +51,10 @@ describe('Parser', () => {
   });
 
   it('can parse some text followed by an option', () => {
-    const results = parser.parse('some text[[optiondest]]');
+    const results = parser.parse('some text [[optiondest]]');
 
     const expected = [
-      { text: 'some text', type: 'text' },
+      { text: 'some text ', type: 'text' },
       { dest: 'optiondest', type: 'option' },
     ];
 
@@ -74,6 +74,17 @@ describe('Parser', () => {
 
   it('can parse some text followed by a newline and a command', () => {
     const results = parser.parse('some text\n<<commandtext>>');
+
+    const expected = [
+      { text: 'some text', type: 'text' },
+      { text: 'commandtext', type: 'command' },
+    ];
+
+    expect(results).to.deep.equal(expected);
+  });
+
+  it('correctly ignores a double newline', () => {
+    const results = parser.parse('some text\n\n<<commandtext>>');
 
     const expected = [
       { text: 'some text', type: 'text' },

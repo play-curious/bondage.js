@@ -7,7 +7,7 @@ const grammar = {
       ['statements EOF', 'return $1'],
     ],
     statements: [
-      ['statements NEWLINE statement', '$1.push($3); $$ = $1'],
+      ['statements NEWLINE', '$$ = $1'],
       ['statements statement', '$1.push($2); $$ = $1'],
       ['statement', '$$ = [$1]'],
     ],
