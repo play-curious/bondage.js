@@ -93,4 +93,15 @@ describe('Parser', () => {
 
     expect(results).to.deep.equal(expected);
   });
+
+  it('correctly ignores a bunch of newlines', () => {
+    const results = parser.parse('some text\n\n\n\n\n\n<<commandtext>>');
+
+    const expected = [
+      { text: 'some text', type: 'text' },
+      { text: 'commandtext', type: 'command' },
+    ];
+
+    expect(results).to.deep.equal(expected);
+  });
 });
