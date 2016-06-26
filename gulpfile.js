@@ -20,6 +20,14 @@ const WEBPACK_CONFIG = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin(),
   ],
+  module: {
+    loaders: [
+      { test: /\.json$/, loader: 'json-loader' },
+    ],
+  },
+  node: {
+    fs: 'empty',
+  },
 };
 
 gulp.task('default', ['webpack']);
