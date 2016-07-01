@@ -87,11 +87,24 @@ class Lexer {
 
     this.state = 'base';
 
+    this.reset();
+  }
+
+  reset() {
+    // Variables for jison to make use of
     this.yytext = '';
+    this.yylloc = {
+      first_column: 0,
+      first_line: 1,
+      last_column: 0,
+      last_line: 1,
+    };
+    this.yylineno = 0;
   }
 
   setInput(text) {
     this.text = text;
+    this.reset();
   }
 
   lex() {
@@ -113,6 +126,17 @@ class Lexer {
       // Tell the parser what the text for this token is
       this.yytext = matchedText;
 
+      // Update our line and column info
+      if (rule.token === 'NEWLINE') {
+        this.yylloc.last_line = this.yylloc.first_line;
+        this.yylloc.first_line++;
+        this.yylloc.first_column = 0;
+        this.yylineno++;
+      } else {
+        this.yylloc.last_column = this.yylloc.first_column;
+        this.yylloc.first_column += matchedText.length;
+      }
+
       // If the rule points to a new state, change it now
       if (rule.state) {
         this.changeState(rule.state);
@@ -121,7 +145,7 @@ class Lexer {
       return rule.token;
     }
 
-    throw Error(`Unable to parse past "${this.text}" while in state "${this.state}"`);
+    return 'INVALID';
   }
 
   changeState(state) {

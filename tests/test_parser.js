@@ -95,7 +95,7 @@ describe('Parser', () => {
   });
 
   it('correctly ignores a bunch of newlines', () => {
-    const results = parser.parse('some text\n\n\n\n\n\n<<commandtext>>');
+    const results = parser.parse('some text\n\n\n\n\n\n<<commandtext>>\n');
 
     const expected = [
       { text: 'some text', type: 'text' },
