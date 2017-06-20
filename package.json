@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jessicahayley/bondage.js.git"
+    "url": "git+https://github.com/jhayley/bondage.js.git"
   },
-  "author": "Jessica Hayley",
+  "author": "j hayley",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jessicahayley/bondage.js/issues"
+    "url": "https://github.com/jhayley/bondage.js/issues"
   },
-  "homepage": "https://github.com/jessicahayley/bondage.js#readme",
+  "homepage": "https://github.com/jhayley/bondage.js#readme",
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-polyfill": "^6.9.0",
