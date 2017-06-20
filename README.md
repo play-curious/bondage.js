@@ -1,9 +1,9 @@
-# bondage.js [![Build Status](https://travis-ci.org/jessicahayley/bondage.js.svg?branch=master)](https://travis-ci.org/jessicahayley/bondage.js)
+# bondage.js [![Build Status](https://travis-ci.org/jhayley/bondage.js.svg?branch=master)](https://travis-ci.org/jhayley/bondage.js)
 [Yarn](https://github.com/InfiniteAmmoInc/Yarn) parser for Javascript, in the same vein as [YarnSpinner](https://github.com/thesecretlab/YarnSpinner).
 
 # Work in Progress
 
-Some of the base text/option functionality is there but it is not nearly fully feature complete. See the [Milestones](https://github.com/jessicahayley/bondage.js/milestones) for what's currently needs to be worked on.
+Some of the base text/option functionality is there but it is not nearly fully feature complete. See the [Milestones](https://github.com/jhayley/bondage.js/milestones) for what's currently needs to be worked on.
 Use at your own risk!
 
 ### Things that don't currently work:
@@ -16,7 +16,7 @@ Use at your own risk!
 
 #### As a Web Tool
 
-To run through your yarn files in your browser, go to http://jayhay.me/bondage.js, paste your yarn data in the field, then hit "compile".
+To run through your yarn files in your browser, go to http://hayley.zone/bondage.js, paste your yarn data in the field, then hit "compile".
 
 #### As a Command Line Tool
 Installation: `npm install -g bondage`
@@ -33,7 +33,7 @@ Now you can use the `bondage` command to run through Yarn files from the command
 
 **Web**
 
-Include [dist/bondage.min.js](https://github.com/jessicahayley/bondage.js/blob/master/dist/bondage.min.js) somewhere in your html, and the `bondage` variable will be added to the global scope. You can then access everything in the example below (such as `bondage.Dialogue`) through that variable. 
+Include [dist/bondage.min.js](https://github.com/jhayley/bondage.js/blob/master/dist/bondage.min.js) somewhere in your html, and the `bondage` variable will be added to the global scope. You can then access everything in the example below (such as `bondage.Dialogue`) through that variable.
 
 **Node**
 
