@@ -1,6 +1,6 @@
 {
   "name": "bondage",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Yarn parser for Javascript",
   "main": "src/bondage.js",
   "scripts": {
