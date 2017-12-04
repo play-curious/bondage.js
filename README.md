@@ -1,17 +1,6 @@
 # bondage.js [![Build Status](https://travis-ci.org/jhayley/bondage.js.svg?branch=master)](https://travis-ci.org/jhayley/bondage.js)
 [Yarn](https://github.com/InfiniteAmmoInc/Yarn) parser for Javascript, in the same vein as [YarnSpinner](https://github.com/thesecretlab/YarnSpinner).
 
-# Work in Progress
-
-Some of the base text/option functionality is there but it is not nearly fully feature complete. See the [Milestones](https://github.com/jhayley/bondage.js/milestones) for what's currently needs to be worked on.
-Use at your own risk!
-
-### Things that don't currently work:
-* Variables
-* If statements
-* Shortcut Options
-* Functions
-
 # Usage
 
 #### As a Web Tool (not up to date right now sorry [#23](https://github.com/jhayley/bondage.js/issues/23))
