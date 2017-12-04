@@ -3,7 +3,7 @@
 
 # Usage
 
-#### As a Web Tool (not up to date right now sorry [#23](https://github.com/jhayley/bondage.js/issues/23))
+#### As a Web Tool
 
 To run through your yarn files in your browser, go to http://hayley.zone/bondage.js, paste your yarn data in the field, then hit "compile".
 
@@ -22,9 +22,9 @@ Now you can use the `bondage` command to run through Yarn files from the command
 
 #### As a Library
 
-**Web** (not up to date right now sorry [#23](https://github.com/jhayley/bondage.js/issues/23))
+**Web**
 
-Include [dist/bondage.min.js](https://github.com/jhayley/bondage.js/blob/master/dist/bondage.min.js) somewhere in your html, and the `bondage` variable will be added to the global scope. You can then access everything in the example below (such as `bondage.Dialogue`) through that variable.
+Include [dist/bondage.min.js](https://github.com/jhayley/bondage.js/blob/master/dist/bondage.min.js) somewhere in your html, and the `bondage` variable will be added to the global scope. You can then access everything in the example below (such as `bondage.Runner`) through that variable.
 
 **Node**
 
