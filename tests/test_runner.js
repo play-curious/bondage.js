@@ -376,7 +376,7 @@ describe('Dialogue', () => {
     expect(run.next().done).to.be.true;
   });
 
-  it('Returns a command to the user', () => {
+  it('Correctly defines the built-in visited() function', () => {
     runner.load(commandAndFunctionYarnData);
     const run = runner.run('VisitedFunctionStart');
 
