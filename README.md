@@ -46,7 +46,7 @@ runner.setCommandHandler((command) => {
 // Register a function to be called from the dialog
 runner.registerFunction('isEven', (args) => {
   // Used as <<if isEven($var)>>It is even<<endif>>
-  return args[0] % 2;
+  return args[0] % 2 == 0;
 });
 
 // Loop over the dialogue from the node titled 'Start'
