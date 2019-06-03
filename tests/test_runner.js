@@ -51,7 +51,7 @@ describe('Dialogue', () => {
   it('Can run through a link to another node', () => {
     runner.load(linksYarnData);
     const run = runner.run('ThreeNodes');
-    
+
     let value = run.next().value;
     expect(value).to.deep.equal(new bondage.TextResult('This is a test line', value.data));
     value = run.next().value;
@@ -390,14 +390,19 @@ describe('Dialogue', () => {
     const run = runner.run('BasicCommands');
 
     let value = run.next().value;
+    expect(value.data).to.not.be.undefined;
     expect(value).to.deep.equal(new bondage.CommandResult('command', value.data));
     value = run.next().value;
+    expect(value.data).to.not.be.undefined;
     expect(value).to.deep.equal(new bondage.TextResult('text in between commands', value.data));
     value = run.next().value;
+    expect(value.data).to.not.be.undefined;
     expect(value).to.deep.equal(new bondage.CommandResult('command with space', value.data));
     value = run.next().value;
+    expect(value.data).to.not.be.undefined;
     expect(value).to.deep.equal(new bondage.CommandResult('callFunction()', value.data));
     value = run.next().value;
+    expect(value.data).to.not.be.undefined;
     expect(value).to.deep.equal(new bondage.CommandResult('callFunctionWithParam(\"test\",true,1,12.5,[2,3])', value.data));
   });
 
@@ -419,10 +424,13 @@ describe('Dialogue', () => {
     });
 
     let value = run.next().value;
+    expect(value.data).to.not.be.undefined;
     expect(value).to.deep.equal(new bondage.TextResult('First line', value.data));
     value = run.next().value;
+    expect(value.data).to.not.be.undefined;
     expect(value).to.deep.equal(new bondage.TextResult('This should show', value.data));
     value = run.next().value;
+    expect(value.data).to.not.be.undefined;
     expect(value).to.deep.equal(new bondage.TextResult('After both', value.data));
 
     expect(run.next().done).to.be.true;
