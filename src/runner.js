@@ -123,7 +123,7 @@ class Runner {
           this.evaluateAssignment(node);
         } else if (node instanceof nodeTypes.Conditional) {
           // Run the results of the conditional
-          yield* this.evalNodes(this.evaluateConditional(node));
+          yield* this.evalNodes(this.evaluateConditional(node), yarnNodeData);
         } else if (node instanceof nodeTypes.Command) {
           if (node.command === 'stop') {
             // Special command, halt execution
