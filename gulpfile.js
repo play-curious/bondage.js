@@ -33,7 +33,7 @@ const WEBPACK_CONFIG = {
 gulp.task('default', ['webpack']);
 
 gulp.task('babel', () => {
-  return gulp.src('src/**.js')
+  return gulp.src('src/**/*.js')
     .pipe(babel())
     .pipe(gulp.dest('target'));
 });
