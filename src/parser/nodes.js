@@ -119,7 +119,7 @@ module.exports = {
       this.selectable = true;
     }
   },
-  
+
   LinkNode: class extends Link {
     constructor(text, identifier, lineNo) {
       super();
@@ -154,6 +154,14 @@ module.exports = {
       super();
       this.type = 'BooleanLiteralNode';
       this.booleanLiteral = booleanLiteral;
+    }
+  },
+
+  NullLiteralNode: class extends Literal {
+    constructor(nullLiteral) {
+      super();
+      this.type = 'NullLiteralNode';
+      this.nullLiteral = nullLiteral;
     }
   },
 

@@ -153,7 +153,7 @@ class Runner {
    * @param {any[]} selections
    */
   * handleSelections(selections) {
-    if (selections.length > 0 || selections[0] instanceof nodeTypes.Shortcut) {		  
+    if (selections.length > 0 || selections[0] instanceof nodeTypes.Shortcut) {
       // Multiple options to choose from (or just a single shortcut)
       // Filter out any conditional dialog options that result to false
       const filteredSelections = selections.filter((s) => {
@@ -304,6 +304,8 @@ class Runner {
         return node.stringLiteral;
       } else if (node.type === 'BooleanLiteralNode') {
         return node.booleanLiteral === 'true';
+      } else if (node.type === 'NullLiteralNode') {
+        return null;
       } else if (node.type === 'VariableNode') {
         return this.variables.get(node.variableName);
       } else if (node.type === 'FunctionResultNode') {
