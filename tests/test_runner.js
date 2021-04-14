@@ -284,6 +284,40 @@ describe('Dialogue', () => {
     expect(run.next().done).to.be.true;
   });
 
+  it('Can evaluate a null assignment', () => {
+    runner.load(assignmentYarnData);
+    const run = runner.run('Null');
+
+    let value = run.next().value;
+    expect(value).to.deep.equal(new bondage.TextResult('Test Line', value.data, value.lineNum));
+
+    expect(runner.variables.get('testvar')).to.be.undefined;
+
+    value = run.next().value;
+    expect(value).to.deep.equal(new bondage.TextResult('Test Line After', value.data, value.lineNum));
+
+    expect(runner.variables.get('testvar')).to.equal(null);
+
+    expect(run.next().done).to.be.true;
+  });
+
+  it('Can evaluate a null assignment with expression', () => {
+    runner.load(assignmentYarnData);
+    const run = runner.run('NullExpression');
+
+    let value = run.next().value;
+    expect(value).to.deep.equal(new bondage.TextResult('Test Line', value.data, value.lineNum));
+
+    expect(runner.variables.get('testvar')).to.be.undefined;
+
+    value = run.next().value;
+    expect(value).to.deep.equal(new bondage.TextResult('Test Line After', value.data, value.lineNum));
+
+    expect(runner.variables.get('testvar')).to.equal(null);
+
+    expect(run.next().done).to.be.true;
+  });
+
   it('Can evaluate an assignment from one variable to another', () => {
     runner.load(assignmentYarnData);
     const run = runner.run('Variable');
