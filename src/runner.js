@@ -108,7 +108,7 @@ class Runner {
         if (selectableNodes !== null) {
           // We're accumulating selections, but this isn't one, so we're done
           // Need to yield the accumulated selections first
-          yield* this.handleSelections(selectableNodes);
+          yield* this.handleSelections(selectableNodes, yarnNodeData);
           selectableNodes = null;
           selectionType = null;
         }
@@ -144,7 +144,7 @@ class Runner {
 		}
     else if (selectableNodes !== null) {
       // At the end of the node, but we still need to handle any final options
-      yield* this.handleSelections(selectableNodes);
+      yield* this.handleSelections(selectableNodes, yarnNodeData);
     }
   }
 
@@ -152,7 +152,7 @@ class Runner {
    * yield an options result then handle the subequent selection
    * @param {any[]} selections
    */
-  * handleSelections(selections) {
+  * handleSelections(selections, yarnNodeData) {
     if (selections.length > 0 || selections[0] instanceof nodeTypes.Shortcut) {
       // Multiple options to choose from (or just a single shortcut)
       // Filter out any conditional dialog options that result to false
@@ -171,7 +171,9 @@ class Runner {
 
       const optionResults = new results.OptionsResult(filteredSelections.map((s) => {
         return s.text;
-      }), filteredSelections.map((s) => {
+      }),
+      yarnNodeData,
+      filteredSelections.map((s) => {
         return s.lineNum || -1;
       }));
 

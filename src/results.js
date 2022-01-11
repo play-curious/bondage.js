@@ -36,11 +36,12 @@ class OptionsResult extends Result {
    * @param {string[]} [options] list of the text of options to be shown
    * @param {int[]} [lineNum] list of the line numbers of options to be shown
    */
-  constructor(options, lineNum) {
+  constructor(options, yarnNodeData, lineNum) {
     super();
     this.options = options;
     this.lineNum = lineNum;
     this.selected = -1;
+    this.data = yarnNodeData;
   }
 
   select(index) {
