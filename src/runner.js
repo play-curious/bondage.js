@@ -8,11 +8,12 @@ const nodeTypes = require('./parser/nodes.js').types;
 class Runner {
   constructor() {
     this.yarnNodes = {};
+    this.currentYarnNodeData;
     this.variables = new DefaultVariableStorage();
     this.functions = {};
     this.visited = {}; // Which nodes have been visited
 
-    this.registerFunction('visited', (args) => {
+    this.registerFunction('visited', (data, args) => {
       return !!this.visited[args[0]];
     });
   }
@@ -73,6 +74,7 @@ class Runner {
       tags:yarnNode.tags.split(" "),
       body:yarnNode.body,
     }
+    this.currentYarnNodeData = yarnNodeData;
     yield* this.evalNodes(parserNodes, yarnNodeData);
   }
 
@@ -312,7 +314,10 @@ class Runner {
         return this.variables.get(node.variableName);
       } else if (node.type === 'FunctionResultNode') {
         if (this.functions[node.functionName]) {
-          return this.functions[node.functionName](node.args.map(this.evaluateExpressionOrLiteral));
+          if(node.args)
+            return this.functions[node.functionName](this.currentYarnNodeData, node.args.map(this.evaluateExpressionOrLiteral));
+          else
+          return this.functions[node.functionName](this.currentYarnNodeData);
         }
 
         throw new Error(`Function "${node.functionName}" not found`);

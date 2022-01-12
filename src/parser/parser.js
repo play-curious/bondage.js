@@ -113,6 +113,7 @@ const grammar = {
     ],
 
     functionResultExpression: [
+      ['Identifier LeftParen RightParen', '$$ = new yy.FunctionResultNode($1);'],
       ['Identifier LeftParen arguments RightParen', '$$ = new yy.FunctionResultNode($1, $3);'],
     ],
 

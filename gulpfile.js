@@ -30,15 +30,12 @@ const WEBPACK_CONFIG = {
   },
 };
 
-gulp.task('default', ['webpack']);
-
-gulp.task('babel', () => {
+exports.babel = function _babel() {
   return gulp.src('src/**/*.js')
     .pipe(babel())
     .pipe(gulp.dest('target'));
-});
-
-gulp.task('webpack', ['babel'], (callback) => {
+}
+exports.default = gulp.series(exports.babel, function _webpack(callback){
   webpack(WEBPACK_CONFIG, (err, stats) => {
     if (err) throw new gutil.PluginError('webpack', err);
 
@@ -48,4 +45,4 @@ gulp.task('webpack', ['babel'], (callback) => {
     }));
     callback();
   });
-});
+})
